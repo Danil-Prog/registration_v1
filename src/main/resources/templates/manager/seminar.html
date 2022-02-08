@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Семинары</title>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+<div layout:fragment="header">
+    <div th:insert="blocks/header :: header"></div>
+</div>
+
+<div layout:fragment="content s12">
+        <h2> Семинары </h2>
+        <table class="responsive-table centered myTable highlight striped">
+            <thead class="my-th">
+            <tr>
+                <th> ID </th>
+                <th> Название конференции </th>
+                <th> Действие </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${list}">
+                <td th:text="${book.id}" class="my-td"> Title </td>
+                <td th:text="${book.nameSeminar}" class="my-td"> Author </td>
+                <td class="my-td">
+                    <a th:href="@{/}"
+                       class=""><i class="material-icons small">edit</i></a>
+
+                    <a th:href="@{/}"
+                       ><i class="material-icons small ">delete</i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</div>
+
+</body>
+</html>
