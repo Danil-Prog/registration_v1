@@ -1,14 +1,13 @@
 package ru.kuzedu.registration.entity.regEntity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "seminar")
-@Data
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ListSeminar {
 
     @Id
@@ -18,7 +17,9 @@ public class ListSeminar {
     @Column(name = "name_seminar")
     private String nameSeminar;
 
-    public ListSeminar() {
-
+    @Builder
+    public ListSeminar(Long id, String nameSeminar){
+        this.id = id;
+        this.nameSeminar = nameSeminar;
     }
 }

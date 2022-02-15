@@ -3,13 +3,13 @@ package ru.kuzedu.registration.service.impl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.kuzedu.registration.dto.seminar.ListSeminarSaveRequestDto;
 import ru.kuzedu.registration.entity.regEntity.ListSeminar;
 import ru.kuzedu.registration.repository.ListSeminarRepository;
 import ru.kuzedu.registration.service.ManagerRegistrationService;
 
-import java.util.List;
+import javax.transaction.Transactional;
 
 @Service
 public class ListSeminarService implements ManagerRegistrationService<ListSeminar> {
@@ -21,16 +21,9 @@ public class ListSeminarService implements ManagerRegistrationService<ListSemina
     }
 
     @Override
-    public Page<ListSeminar> listAll(int pageNum, String sortField, String sortDir, String keyword) {
-        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
-                Sort.by(sortField).descending();
-        int pageSize = 12;
-
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
-        if (keyword != null){
-            return listSeminarRepository.listAll(keyword, pageable);
-        }
-
+    public Page<ListSeminar> findAllResponse(Pageable pageable) {
+        int page = pageable.getPageNumber() == 0 ? 0 : pageable.getPageNumber() - 1;
+        pageable = PageRequest.of(page, 7);
         return listSeminarRepository.findAll(pageable);
     }
 
@@ -39,9 +32,9 @@ public class ListSeminarService implements ManagerRegistrationService<ListSemina
         return listSeminarRepository.findById(id).get();
     }
 
-    @Override
-    public ListSeminar updateRecord(ListSeminar listSeminar) {
-        return listSeminarRepository.save(listSeminar);
+    @Transactional
+    public Long saveRecord(ListSeminarSaveRequestDto dto) {
+        return listSeminarRepository.save(dto.toEntity()).getId();
     }
 
     @Override

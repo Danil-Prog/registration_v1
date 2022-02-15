@@ -14,8 +14,11 @@
     <div th:insert="blocks/header :: header"></div>
 </div>
 
-<div layout:fragment="content s12">
+<div layout:fragment="main-content">
         <h2> Семинары </h2>
+        <button data-target="createModal" class="btn modal-trigger">СОЗДАТЬ</button>
+        <br>
+        <br>
         <table class="responsive-table centered myTable highlight striped">
             <thead class="my-th">
             <tr>
@@ -25,7 +28,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="book : ${list}">
+            <tr th:each="book : ${pages}">
                 <td th:text="${book.id}" class="my-td"> Title </td>
                 <td th:text="${book.nameSeminar}" class="my-td"> Author </td>
                 <td class="my-td">
@@ -38,7 +41,71 @@
             </tr>
             </tbody>
         </table>
+
+    <!-- customers pagination -->
+    <div aria-label="Pagination">
+        <ul class="pagination" th:with="start = ${start}, last = ${last}">
+            <li><a th:href="@{/api/v1/seminars/(page = 1)}" aria-label="First">
+                <i class="material-icons">skip_previous</i>
+            </a></li>
+
+            <li th:class="${pages.first} ? 'disabled'">
+                <a th:href="${pages.first} ? '#' : @{/api/v1/seminars/(page = ${pages.getNumber()})}">
+                    <i class="material-icons">chevron_left</i></a></li>
+
+            <li th:each="page : ${#numbers.sequence(start, last)}" th:class="${page == pages.getNumber() + 1} ? 'active'">
+                <a th:href="@{/api/v1/seminars/(page = ${page})}" th:text="${page}"></a></li>
+
+            <li th:class="${pages.last} ? 'disabled'">
+                <a th:href="${pages.last} ? '#' : @{/api/v1/seminars/(page = ${pages.getNumber() + 2})}">
+                    <i class="material-icons">chevron_right</i></a></li>
+
+            <li><a th:href="@{/api/v1/seminars/(page = ${pages.totalPages})}" aria-label="Last">
+                <i class="material-icons">skip_next</i>
+            </a></li>
+        </ul>
+    </div>
+
+    <!--  Create modal structure  -->
+    <div id="createModals" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Создать семинар</h4>
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input type="text" id="createNames" class="autocomplete validate">
+                    <label for="createName">Название семинара</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="" class="modal-close waves-effect waves-green btn-flat"
+               th:onclick="|javascript:save()|">Сохранить</a>
+        </div>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+
+
+    <!-- Modal Structure -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <h4>Создать семинар</h4>
+            <div class="input-field">
+            <i class="material-icons prefix">account_circle</i>
+            <input type="text" id="createName" class="autocomplete">
+            <label for="createName">Название семинара</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="" class="modal-close waves-effect btn-flat"
+               th:onclick="|javascript:save()|">Сохранить</a>
+        </div>
+    </div>
 </div>
 
+
+
 </body>
+
 </html>
