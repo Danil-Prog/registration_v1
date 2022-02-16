@@ -10,5 +10,6 @@ public interface ManagerRegistrationService<T> {
     Page<T> findAllResponse(Pageable pageable);
     T getById(Long id);
     void deleteById(Long id);
+    T saveRecord(T t);
     T save(T t);
 }

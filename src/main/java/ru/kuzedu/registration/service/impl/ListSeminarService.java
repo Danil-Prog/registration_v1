@@ -4,12 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.kuzedu.registration.dto.seminar.ListSeminarSaveRequestDto;
 import ru.kuzedu.registration.entity.regEntity.ListSeminar;
 import ru.kuzedu.registration.repository.ListSeminarRepository;
 import ru.kuzedu.registration.service.ManagerRegistrationService;
-
-import javax.transaction.Transactional;
 
 @Service
 public class ListSeminarService implements ManagerRegistrationService<ListSeminar> {
@@ -32,9 +29,8 @@ public class ListSeminarService implements ManagerRegistrationService<ListSemina
         return listSeminarRepository.findById(id).get();
     }
 
-    @Transactional
-    public Long saveRecord(ListSeminarSaveRequestDto dto) {
-        return listSeminarRepository.save(dto.toEntity()).getId();
+    public ListSeminar saveRecord(ListSeminar dto) {
+        return listSeminarRepository.save(dto);
     }
 
     @Override
